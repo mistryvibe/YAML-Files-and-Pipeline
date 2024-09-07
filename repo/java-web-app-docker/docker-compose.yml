@@ -1,0 +1,12 @@
+name: javaapp
+services:
+  javaweb:
+    image: mistryvibe/java-web-app-docker:1
+    restart: always
+    ports:
+    - 8080:8080
+    networks:
+    - javabridge
+networks:
+  javabridge:
+
