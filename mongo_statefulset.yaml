@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+  namespace: test-ns
+spec:
+  clusterIP: None
+  selector:
+    app: mongod
+  ports:
+  - port: 27017
+    targetPort: 27017
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongod
+  namespace: test-ns
+spec:
+  selector:
+    matchLabels:
+      app: mongod
+  serviceName: mongodb-service
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: mongod
+    spec:
+      containers:
+      - name: mongod
+        image: mongo
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 300m
+          limits:
+            memory: 500Mi
+            cpu: 600m
+        command:
+        - "mongod"
+        - "--replSet"
+        - "MainRepSet"
+        - "--bind_ip"
+        - "0.0.0.0"
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongopvc
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: mongopvc
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
+
