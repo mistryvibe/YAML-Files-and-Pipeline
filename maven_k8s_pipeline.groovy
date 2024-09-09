@@ -22,7 +22,7 @@ node{
     }
     /*
     stage("Update tag"){
-        sh 'sed -i "s/mistryvibe\\/java-web-app-docker:[0-9]\\+/mistryvibe\\/java-web-app-docker:${BUILD_NUMBER}/" docker-compose.yml'
+        sh 'sed -i "s/mistryvibe\\/spring-boot-mongo-docker:[0-9]\\+/mistryvibe\\/spring-boot-mongo-docker:${BUILD_NUMBER}/" docker-compose.yml'
     }
     */
     stage("Deploy app in k8s"){
@@ -31,3 +31,4 @@ node{
 }
     
     
+
